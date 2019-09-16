@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <title>Weather</title>
+  <style>
+      label, input, button {
+          display: block;
+          margin: 10px;
+          font-size: 20px;
+      }
+      button {
+          border-radius: 5px;
+          border-color: yellow;
+          background: yellow;
+      }
+      input {
+          width: 600px;
+      }
+  </style>
+ </head>
+ <body>
+    <label for="city">
+        Input any city to find out weather:
+    </label>
+    <input id="city" />
+    <button type="button" onClick={handleClick()}>Search</button>
+ </body>
+ <script>
+     const APIKey = 'e34c51f8b71bca2945c6901e59dc5b69';
+     async function handleClick() {
+        let inputValue = document.getElementById('city').value;
+        let weather = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&APPID=${APIKey}`);
+        if (weather.ok) {
+            let jsonWeather = await weather.json();
+            console.log(jsonWeather);
+        } else {
+            console.log(`Error while requesting API: ${weather.status}`);
+        }
+     }
+ </script>
+</html>
