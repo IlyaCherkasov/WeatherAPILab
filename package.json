@@ -1,0 +1,30 @@
+{
+  "name": "weather_api_lab",
+  "version": "0.0.1",
+  "description": "This is a web-programming lab with weather API, less and mustache",
+  "main": "index.html",
+  "dependencies": {
+    "less": "^3.10.3",
+    "mustache": "^3.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cherkasik/WeatherAPILab.git"
+  },
+  "keywords": [
+    "weather",
+    "api",
+    "less",
+    "mustache"
+  ],
+  "author": "Cherkasik (Ilya Cherkasov)",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Cherkasik/WeatherAPILab/issues"
+  },
+  "homepage": "https://github.com/Cherkasik/WeatherAPILab#readme"
+}
