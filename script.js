@@ -21,6 +21,10 @@ async function handleClick() {
         const html = Mustache.to_html(template, jsonWeather);
         outputField.innerHTML = html;
     } else {
-        alert(`Error while requesting API: ${weather.status} ${weather.statusText}. Try another one, please.`);
+        template = `
+            <p>Something went wrong... Try again, please.<p>
+            <p>Response is: ${weather.status} ${weather.statusText}</p>
+        `;
+        outputField.innerHTML = template;
     }
 }
