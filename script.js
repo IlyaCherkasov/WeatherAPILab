@@ -22,6 +22,10 @@ const templateOnError = `
 
 async function handleSubmit(e) {
     e.preventDefault();
+    if (e.target[0].value === ''){
+        addElementToHTML('<p>Nothing to search. You need to write something.</p>')
+        return;
+    }
     addElementToHTML(await handleWeatherData(await getWeatherData(e.target[0].value)));
 }
 
