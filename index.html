@@ -6,11 +6,13 @@
   <link href="styles.css" rel="stylesheet" type="text/css" />
  </head>
  <body>
-    <label for="city">
-        Input any city to find out weather:
-    </label>
-    <input id="city" />
-    <button type="button" onClick={handleClick()}>Search</button>
+     <form onsubmit="return handleClick(event)">
+        <label for="city">
+            Input any city to find out weather:
+        </label>
+        <input id="city" />
+        <button type="submit">Search</button>
+    </form>
     <div id="weather"></div>
     <script src="./node_modules/mustache/mustache.js"></script>
     <script type="text/javascript" src="script.js"></script>
