@@ -13,28 +13,35 @@ const templateOnSuccess= `
     {{/wind}}
 `;
 
+document.getElementById('weatherForm').addEventListener('submit', handleSubmit);
+
 const templateOnError = `
     <p>Something went wrong... Try again, please.<p>
-    <p>Response is: ${weather.status} ${weather.statusText}</p>
+    <p>Response is: {{cod}} {{message}}</p>
 `;
-async function handleClick(e) {
+
+async function handleSubmit(e) {
     e.preventDefault();
-    let inputValue = document.getElementById('city').value;
-    const outputField = document.getElementById('weather');
-    outputField.innerHTML = await getWeatherData(inputValue);
+    addElementToHTML(await handleWeatherData(await getWeatherData(e.target[0].value)));
 }
 
 async function getWeatherData(inputValue) {
     let weather = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${inputValue}&APPID=${APIKey}`);
-    if (weather.ok) {
-        const jsonWeather = await weather.json();
+    return weather;
+}
+
+async function handleWeatherData(weatherData) {
+    if (weatherData.ok) {
+        const jsonWeather = await weatherData.json();
         const html = Mustache.to_html(templateOnSuccess, jsonWeather);
         return html;
-    } else {
-        template = `
-            <p>Something went wrong... Try again, please.<p>
-            <p>Response is: ${weather.status} ${weather.statusText}</p>
-        `;
-        return templateOnError;
     }
+    const jsonWeather = await weatherData.json();
+    const html = Mustache.to_html(templateOnError, jsonWeather);
+    return html;
+}
+
+function addElementToHTML(html) {
+    const outputField = document.getElementById('weather');
+    outputField.innerHTML = html;
 }
