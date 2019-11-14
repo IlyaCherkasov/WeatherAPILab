@@ -24,7 +24,7 @@ async function handleSubmit(e) {
     e.preventDefault();
     if (e.target[0].value === ''){
         addElementToHTML('<p>Nothing to search. You need to write something.</p>')
-        return;
+        return 'Empty value';
     }
     addElementToHTML(await handleWeatherData(await getWeatherData(e.target[0].value)));
 }
@@ -49,3 +49,12 @@ function addElementToHTML(html) {
     const outputField = document.getElementById('weather');
     outputField.innerHTML = html;
 }
+
+module.exports = () => {
+    return {
+        handleWeatherData,
+        addElementToHTML,
+        getWeatherData,
+        handleSubmit
+    };
+};

@@ -4,12 +4,15 @@
   "description": "This is a web-programming lab with weather API, less and mustache",
   "main": "index.html",
   "dependencies": {
+    "chai": "^4.2.0",
     "less": "^3.10.3",
+    "mocha": "^6.2.2",
+    "mocha-jsdom": "^2.0.0",
     "mustache": "^3.1.0"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "build": "lessc styles.less styles.css"
   },
   "repository": {
