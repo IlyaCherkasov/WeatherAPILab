@@ -1,6 +1,5 @@
 mocha = require('mocha');
 expect = require('chai').expect;
-jsdom = require('mocha-jsdom');
 Mustache = require('mustache');
 
 global.document = {
@@ -20,12 +19,13 @@ global.document = {
   }
 };
 
-fetch = () => 'This is sample return';
-
 const functions = require('./script');
 
-describe('testing everything', () => {
-  it('handleWeatherData', async () => {
+// TODO: change desc
+describe('script.js', () => {
+  beforeEach(() => fetch = () => 'This is sample return');
+
+  it('handleWeatherData weather.ok = true', async () => {
     const result = await functions().handleWeatherData({
       ok: true,
       json: () => { return {
@@ -43,20 +43,63 @@ describe('testing everything', () => {
 `);
   });
 
-  it('addElementToHTML', () => {
+  it('handleWeatherData weather.ok = false', async () => {
+    const result = await functions().handleWeatherData({
+      ok: false,
+      json: () => { return {
+        cod: 47,
+        message: 'fool test'
+      }},
+    });
+    expect(result).to.equal(`
+    <p>Something went wrong... Try again, please.<p>
+    <p>Response is: 47 fool test</p>
+`);
+  });
+
+  it('handleWeatherData weather.ok = undefined', async () => {
+    const result = await functions().handleWeatherData({
+      json: () => { return {
+        cod: 47,
+        message: 'fool test'
+      }},
+    });
+    expect(result).to.equal(`
+    <p>Something went wrong... Try again, please.<p>
+    <p>Response is: 47 fool test</p>
+`);
+  });
+
+  it('addElementToHTML function', () => {
     const result = functions().addElementToHTML('<p>The weather is weather</p>');
   });
 
-  it('getWeatherData', async () => {
+  it('getWeatherData function', async () => {
     const result = await functions().getWeatherData('Moscow');
     expect(result).to.equal('This is sample return');
   });
 
-  it('handleSubmit', async () => {
+  it('handleSubmit with empty target value', async () => {
     const result = await functions().handleSubmit({
       preventDefault: () => {},
       target: [{ value: '' }]
     });
     expect(result).to.equal('Empty value');
+    // TODO: check if functions were called
+  });
+
+  it('handleSubmit with non-empty target value', async () => {
+    let addElementToHTMLCount = 0;
+    // TODO: mock functions with sinon mb
+    let handleWeatherDataCount = 0;
+    let getWeatherDataCount = 0;
+    functions().addElementToHTML = () => { addElementToHTMLCount += 1; };
+    functions().handleWeatherData = () => { handleWeatherDataCount += 1; };
+    functions().getWeatherData = () => { getWeatherDataCount += 1; };
+    const result = await functions().handleSubmit({
+      preventDefault: () => {},
+      target: [{ value: 'Moscow' }]
+    });
+    expect(addElementToHTMLCount).to.equal(1);
   });
 });
