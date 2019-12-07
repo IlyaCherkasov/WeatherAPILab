@@ -1,6 +1,7 @@
 mocha = require('mocha');
 expect = require('chai').expect;
 Mustache = require('mustache');
+sinon = require('sinon');
 
 global.document = {
   getElementById: (arg) => {
@@ -21,8 +22,7 @@ global.document = {
 
 const functions = require('./script');
 
-// TODO: change desc
-describe('script.js', () => {
+describe('script.js functions', () => {
   beforeEach(() => fetch = () => 'This is sample return');
 
   it('handleWeatherData weather.ok = true', async () => {
@@ -80,26 +80,29 @@ describe('script.js', () => {
   });
 
   it('handleSubmit with empty target value', async () => {
+    const add = sinon.fake();
+    const handle = sinon.fake.returns({ json: '24' });
+    const get = sinon.fake();
     const result = await functions().handleSubmit({
       preventDefault: () => {},
       target: [{ value: '' }]
-    });
+    }, add, handle, get);
     expect(result).to.equal('Empty value');
-    // TODO: check if functions were called
+    expect(add.called).to.equal(false);
+    expect(handle.called).to.equal(false);
+    expect(get.called).to.equal(false);
   });
 
   it('handleSubmit with non-empty target value', async () => {
-    let addElementToHTMLCount = 0;
-    // TODO: mock functions with sinon mb
-    let handleWeatherDataCount = 0;
-    let getWeatherDataCount = 0;
-    functions().addElementToHTML = () => { addElementToHTMLCount += 1; };
-    functions().handleWeatherData = () => { handleWeatherDataCount += 1; };
-    functions().getWeatherData = () => { getWeatherDataCount += 1; };
+    const add = sinon.fake();
+    const handle = sinon.fake.returns({ json: '24' });
+    const get = sinon.fake();
     const result = await functions().handleSubmit({
       preventDefault: () => {},
       target: [{ value: 'Moscow' }]
-    });
-    expect(addElementToHTMLCount).to.equal(1);
+    }, add, handle, get);
+    expect(add.calledOnce).to.equal(true);
+    expect(handle.calledOnce).to.equal(true);
+    expect(get.calledOnce).to.equal(true);
   });
 });

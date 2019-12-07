@@ -20,13 +20,18 @@ const templateOnError = `
     <p>Response is: {{cod}} {{message}}</p>
 `;
 
-async function handleSubmit(e) {
+async function handleSubmit(
+    e,
+    draw = addElementToHTML,
+    handle = handleWeatherData,
+    getData = getWeatherData
+) {
     e.preventDefault();
     if (e.target[0].value === ''){
-        addElementToHTML('<p>Nothing to search. You need to write something.</p>')
+        addElementToHTML('<p>Nothing to search. You need to write something.</p>');
         return 'Empty value';
     }
-    addElementToHTML(await handleWeatherData(await getWeatherData(e.target[0].value)));
+    draw(await handle(await getData(e.target[0].value)));
 }
 
 async function getWeatherData(inputValue) {
